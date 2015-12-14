@@ -20,11 +20,42 @@ mongoose.connect('mongodb://localhost/microblog-app');
 var Post = require('./models/post');
 
 
+// hard coded quote data - we render one of these on the main page each reload
+var quotes = [];
+quotes.push({ text: "I want to know God's thoughts, the rest are details.",
+              person: 'Albert Einstein'
+});
+quotes.push({ text: "Whatever the mind can conceive and believe, the mind can achieve.",
+              person: 'Dr. Napoleon Hill'
+});
+quotes.push({ text: "Do not wait to strike till the iron is hot; but make it hot by striking.",
+              person: "William B. Sprague"
+});
+quotes.push({ text: "Experience is what you get when you don’t get what you want.",
+              person: "Dan Stafford"
+});
+
+// returns a random quote from the list
+function getRandomQuote() {
+  return quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+
 // HOMEPAGE ROUTE
 
 app.get('/', function (req, res) {
-  res.render('index');
+  // note that render here is doing server-side template rendering!
+  var quote = getRandomQuote();
+  res.render('index', {randomQuote: quote});
 });
+
+
+
+
+
+
+
+
 
 
 // API ROUTES
