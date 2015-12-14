@@ -46,9 +46,16 @@
 
         <!-- list of posts -->
         <ul class="list-group" id="posts-list">
-          
+
+
+        
           <!-- handlebars template -->
           <script id="posts-template" type="text/x-handlebars-template">
+          <!-- using backslash before handlebars tags "{ }" prevents the server-side parsing from replacing these fields. 
+               That way they are still visible and usable by the client-side.  
+               Meanwhile those without the backslash are parsed on the server-side before being sent to the client.  They're not
+               visible client-side!
+               -->
             \{{#each posts}}
               <li class="list-group-item post" data-id="\{{_id}}">
 
