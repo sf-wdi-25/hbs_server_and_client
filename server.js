@@ -43,6 +43,7 @@ function getRandomQuote() {
 
 // HOMEPAGE ROUTE
 
+// this has both server and client-side templates
 app.get('/', function (req, res) {
   // note that render here is doing server-side template rendering!
   var quote = getRandomQuote();
@@ -51,7 +52,12 @@ app.get('/', function (req, res) {
 
 
 
+// server-side only example
+var userData = { username: 'sparky', age: 43, firstName: 'Clark', lastName: 'Griswold'};
 
+app.get('/profiledata', function(req,res) {
+  res.render('userprofile', {user: userData});
+});
 
 
 

@@ -24,7 +24,7 @@ app.set('view engine', 'hbs');
 This tells express to use hbs as its view engine.  That means it'll use hbs whenever we call `res.render`.
 
 
-## render with template (server-side)
+## Server-side rendering
 
 
 Create an html/handlebars page like:
@@ -49,12 +49,13 @@ app.get('/testpage', function(req,res){
 ```
 
 
+
 We should now be able to view the page at `localhost:3000/testpage`
 
 Next let's try to use an object to fill in the page.  
 
 ```js
-userData = { username: 'sparky', age: 43, firstName: 'Clark', lastName: 'Griswold'}
+var userData = { username: 'sparky', age: 43, firstName: 'Clark', lastName: 'Griswold'};
 
 app.get('/profiledata', function(req,res) {
   res.render('userprofile', {user: userData});
@@ -75,6 +76,7 @@ app.get('/profiledata', function(req,res) {
 
 Great that should work!
 
+> You can see this solution in the code as well.
 
 
 # Using hbs with both client and server-side templating together
@@ -113,5 +115,8 @@ Further down the page you'll see:
       <span class="label label-default">\{{title}}</span>
 ```
 
-This is setup to use **client-side** templating. Note how it's inside a **script** tag.  The client-side JS will grab it from there.
-Also note how each `{{}}` is **pre-fixed by a backslash**.  This is really important.  It keeps the server from trying to fill in the {{}} so the client-side can still see them.  Without these, the server would try to replace `{{title}}` with a title (which we don't have)!
+This is the **client-side** template!  Note how it's inside a **script** tag; it won't be displayed on the page.  The client-side JS can grab it from here and display it on the page after compiling.
+
+**Why isn't the server filling in the hbs blanks?**
+
+Note how each `{{}}` is **pre-fixed by a backslash**.  This is really important.  It keeps the server from trying to fill in the {{}} so the client-side can still see them.  Without these, the server would try to replace `{{title}}` with a title (which we don't have)!
