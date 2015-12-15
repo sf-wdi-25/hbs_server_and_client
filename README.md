@@ -79,4 +79,39 @@ Great that should work!
 
 # Using hbs with both client and server-side templating together
 
-**caution: advanced**
+**caution: advanced** You probably don't need both!
+
+For this example take a look at the code in this repo.  Pay attention to the following:
+
+```html
+<!--index.hbs-->
+<div class="page-header">
+  <h1>Microblog </h1>
+  <small>{{randomQuote.text}} - {{randomQuote.person}}</small>
+</div>
+```
+For the above code, **server-side** rendering is being used.  The server **must** provide a randomQuote when calling `render`.
+
+```js
+//server.js
+app.get('/', function (req, res) {
+  // note that render here is doing server-side template rendering!
+  var quote = getRandomQuote();
+  res.render('index', {randomQuote: quote});
+});
+```
+
+Further down the page you'll see:
+
+```html
+<script id="posts-template" type="text/x-handlebars-template">
+....
+  \{{#each posts}}
+    <li class="list-group-item post" data-id="\{{_id}}">
+
+      <!-- post label (title) -->
+      <span class="label label-default">\{{title}}</span>
+```
+
+This is setup to use **client-side** templating. Note how it's inside a **script** tag.  The client-side JS will grab it from there.
+Also note how each `{{}}` is **pre-fixed by a backslash**.  This is really important.  It keeps the server from trying to fill in the {{}} so the client-side can still see them.  Without these, the server would try to replace `{{title}}` with a title (which we don't have)!
